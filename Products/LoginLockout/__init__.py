@@ -9,9 +9,9 @@ from Products.CMFCore.DirectoryView import registerDirectory
 from Products.LoginLockout.loginlockout_tool import LoginLockoutTool
 from Products.LoginLockout.plugin import PROJECTNAME
 from Products.PluggableAuthService import registerMultiPlugin
-from plugin import LoginLockout
-from plugin import manage_addLoginLockout
-from plugin import manage_addLoginLockoutForm
+from .plugin import LoginLockout
+from .plugin import manage_addLoginLockout
+from .plugin import manage_addLoginLockoutForm
 
 
 def initialize(context):

@@ -6,9 +6,9 @@ from Testing import ZopeTestCase as ztc
 from zope.testing import doctest
 import unittest
 
-print "Start installProduct"
+print("Start installProduct")
 ztc.installProduct('LoginLockout')
-print "Finished installProduct setup (hopefully)"
+print("Finished installProduct setup (hopefully)")
 
 
 class TestCase(ptc.PloneTestCase):

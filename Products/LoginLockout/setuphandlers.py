@@ -3,7 +3,7 @@ from Products.LoginLockout.config import TOOL_ID
 from Products.LoginLockout.plugin import PLUGIN_ID
 from Products.LoginLockout.plugin import PLUGIN_TITLE
 from Products.LoginLockout.plugin import PROJECTNAME
-from StringIO import StringIO
+from io import StringIO
 
 
 def install(portal):
@@ -14,7 +14,7 @@ def install(portal):
     Different interfaces need to be activated for either case.
     """
     out = StringIO()
-    print >> out, "Installing %s:" % PROJECTNAME
+    print("Installing %s:" % PROJECTNAME, file=out)
 
     plone_pas = getToolByName(portal, 'acl_users')
     zope_pas = portal.getPhysicalRoot().acl_users
@@ -25,7 +25,7 @@ def install(portal):
                     'ICredentialsUpdatePlugin'],
         zope_pas: ['IChallengePlugin', 'IAnonymousUserFactoryPlugin'],
     }
-    for (pas, interfaces) in interfaces_for_paservices.iteritems():
+    for (pas, interfaces) in interfaces_for_paservices.items():
         existing = pas.objectIds()
         if PLUGIN_ID not in existing:
             loginlockout = pas.manage_addProduct[PROJECTNAME]
@@ -37,7 +37,7 @@ def install(portal):
         plone_pas: 'IChallengePlugin',
         zope_pas: 'IAnonymousUserFactoryPlugin',
     }
-    for (pas, interface) in move_to_top_for.iteritems():
+    for (pas, interface) in move_to_top_for.items():
         movePluginToTop(pas, PLUGIN_ID, interface, out)
 
     # add tool
@@ -46,13 +46,13 @@ def install(portal):
     # install configlet
     # installConfiglets(portal, out, CONFIGLETS)
 
-    print >> out, "Successfully installed %s." % PROJECTNAME
+    print("Successfully installed %s." % PROJECTNAME, file=out)
     return out.getvalue()
 
 
 def uninstall(portal):
     out = StringIO()
-    print >> out, "Uninstalling %s:" % PROJECTNAME
+    print("Uninstalling %s:" % PROJECTNAME, file=out)
     plone_pas = getToolByName(portal, 'acl_users')
     zope_pas = portal.getPhysicalRoot().acl_users
     for pas in [plone_pas, zope_pas]:
@@ -84,12 +84,12 @@ def activatePluginSelectedInterfaces(
                 interface_name in selected_interfaces:
             if interface_name in disable:
                 disable.append(interface_name)
-                print >> out, " - Disabling: " + info['title']
+                print(" - Disabling: " + info['title'], file=out)
             else:
                 activatable.append(interface_name)
-                print >> out, " - Activating: " + info['title']
+                print(" - Activating: " + info['title'], file=out)
     plugin_obj.manage_activateInterfaces(activatable)
-    print >> out, plugin + " activated."
+    print(plugin + " activated.", file=out)
 
 
 def movePluginToTop(pas, plugin_id, interface_name, out):
@@ -100,7 +100,7 @@ def movePluginToTop(pas, plugin_id, interface_name, out):
     interface = registry._getInterfaceFromName(interface_name)
     while registry.listPlugins(interface)[0][0] != plugin_id:
         registry.movePluginsUp(interface, [plugin_id])
-    print >> out, "Moved " + plugin_id + " to top in " + interface_name + "."
+    print("Moved " + plugin_id + " to top in " + interface_name + ".", file=out)
 
 
 def addTool(portal, product_name, tool_id):
@@ -118,17 +118,17 @@ def installConfiglets(portal, out, configlets, uninstall=False):
     list of hashes.
     """
 
-    print >> out, 'Installing configlet...'
+    print('Installing configlet...', file=out)
 
     ctool = getToolByName(portal, 'portal_controlpanel')
 
     for c in configlets:
-        print >> out, "-> installing configlet %s" % c['name']
+        print("-> installing configlet %s" % c['name'], file=out)
         ctool.unregisterConfiglet(c['id'])
         if not uninstall:
             ctool.registerConfiglet(**c)
 
-    print >> out, "done."
+    print("done.", file=out)
 
 
 def setupVarious(context):

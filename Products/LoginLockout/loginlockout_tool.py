@@ -57,7 +57,7 @@ class LoginLockoutTool(UniqueObject, SimpleItem):
         pattern_regex = re.compile(pattern, re.I)
         result = list()
         for username, attempts in \
-                self._getPlugin().listSuccessfulAttempts().items():
+                list(self._getPlugin().listSuccessfulAttempts().items()):
             if pattern_regex.search(username):
                 result.append(dict(username=username, attempts=attempts))
         return result

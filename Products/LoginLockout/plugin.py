@@ -364,7 +364,7 @@ class LoginLockout(Folder, BasePlugin, Cacheable):
         o Return one mapping per user, with the following keys
         """
         root = self.getRootPlugin()
-        return [self.getAttemptInfo(x) for x in root._login_attempts.keys()]
+        return [self.getAttemptInfo(x) for x in list(root._login_attempts.keys())]
 
     security.declareProtected(ManageUsers, 'listSuccessfulAttempts')
 

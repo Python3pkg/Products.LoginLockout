@@ -1,4 +1,4 @@
-from plugin import PROJECTNAME
+from .plugin import PROJECTNAME
 from zope.i18nmessageid import MessageFactory
 
 _ = MessageFactory('PasswordStrength')
